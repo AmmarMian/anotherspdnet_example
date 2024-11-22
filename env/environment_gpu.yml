@@ -1,0 +1,34 @@
+# ========================================
+# FileName: environment.yml
+# Date: 22 nov 2024
+# Author: Ammar Mian
+# Email: ammar.mian@univ-smb.fr
+# GitHub: https://github.com/ammarmian
+# Brief: Environment file for anotherspdnet - gpu version
+# =========================================
+
+name: anotherspdnet-gpu
+channels:
+  - pytorch
+  - nvidia
+dependencies:
+  - python=3.10
+  - pip
+  - pytorch
+  - torchvision
+  - pytorch-cuda=11.7
+  - matplotlib
+  - seaborn
+  - plotly
+  - scipy
+  - pandas
+  - ipython
+  - pip:
+    - git+https://github.com/ammarmian/qanat
+    - git+https://github.com/geoopt/geoopt.git
+    - git+https://github.com/AmmarMian/anotherspdnet
+    - memory_profiler
+    - watchdog
+    - plotille
+    - pyyaml
+    - rich
