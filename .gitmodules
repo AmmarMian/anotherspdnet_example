@@ -1,0 +1,3 @@
+[submodule "anotherspdnet"]
+	path = anotherspdnet
+	url = https://github.com/AmmarMian/anotherspdnet
