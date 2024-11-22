@@ -6,7 +6,7 @@ This repo is a small example to use [anotherspdnet](https://github.com/AmmarMian
 
 To help with installation, we use [just](https://github.com/casey/just) task runner, so make sur to install that first. Then, depending on your setup (cpu or gpu), two tasks are available:
 * CPU: `just create_env_cpu`
-* GPY: `create_env_gpu`
+* GPU: `just create_env_gpu`
 
 They will create a conda envrinoment called either `anotherspdnet-cpu` or `anotherspdnet-gpu`. This comes with the latest code of `anotherspdnet` grom Github. In case you need to tinker with the code, the `anotherspdnet` repo is a submodule of this one so you can download submodules:
 * download code `just get_anotherspdnet`
