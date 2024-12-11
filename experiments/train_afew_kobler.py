@@ -32,7 +32,8 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
 from src.data import AFEWSPDnetDataset
 from src.utils import MatplotlibTrainingVisualizer, setup_logging, format_params
-from src.models import SPDNet
+# from src.models import SPDNet
+from spdnet_kobler.models import SPDNetKobler
 
 logger = setup_logging()
 
@@ -51,8 +52,6 @@ if __name__ == "__main__":
                         help="Epsilon for SPDNet")
     parser.add_argument("--softmax", type=bool, default=False,
                         help="Use softmax activation function")
-    parser.add_argument("--reeig_bias", type=str, default="False",
-                        help="Use reeig with bias term")
     parser.add_argument("--batchnorm", type=str, default="False",
                         help="Use batch normalization")
     parser.add_argument("--batch_size", type=int, default=32,
@@ -81,7 +80,6 @@ if __name__ == "__main__":
     args.hd = eval(args.hd)
     args.device = torch.device(args.device)
     args.batchnorm = eval(args.batchnorm)
-    args.reeig_bias = eval(args.reeig_bias)
     if args.dtype == "float32":
         args.dtype = torch.float32
     elif args.dtype == "float64":
@@ -105,12 +103,12 @@ if __name__ == "__main__":
 
 
     # Create models
+    device = torch.device(args.device)
     n_out = dataset.n_classes
-    spdnet = SPDNet(input_dim = dataset.d, hidden_layers_size = args.hd,
+    spdnet = SPDNetKobler(input_dim = dataset.d, hidden_layers_size = args.hd,
                     output_dim = dataset.n_classes, eps = args.eps,
-                    softmax = args.softmax, device = args.device,
-                    precision = args.dtype, batchnorm = args.batchnorm,
-                    reeig_bias = args.reeig_bias)
+                    softmax = args.softmax,
+                    precision = args.dtype, batchnorm = args.batchnorm).to(device)
     model_name = str(spdnet)
                     
 
@@ -207,7 +205,7 @@ if __name__ == "__main__":
 
 
                     y_pred = spdnet(X)
-                    loss = loss_fn(y_pred, y)
+                    loss= loss_fn(y_pred, y)
                     acc = (y_pred.argmax(dim=1) == y).float().mean() * 100
                     _val_loss += loss.item()
                     _val_acc += acc
@@ -288,8 +286,8 @@ if __name__ == "__main__":
 
     print("Test loss: {:.4f}".format(test_loss))
     print("Test accuracy: {:.4f}".format(test_acc))
-    writer.add_scalar('Loss/test', {model_name: test_loss})
-    writer.add_scalar('Accuracy/test', {model_name: test_acc})
+    writer.add_scalars('Loss/test', {model_name: test_loss})
+    writer.add_scalars('Accuracy/test', {model_name: test_acc})
     writer.flush()
     writer.close()
 

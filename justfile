@@ -20,7 +20,13 @@ download_afewspd:
 # Run SPDnet training on AFEW dataset
 run_afew:
     mkdir -p results/afew
-    python ./experiments/train_afew.py --storage_path ./results/afew/
+    python ./experiments/train_afew.py --storage_path ./results/afew/ 
+
+# Rub SPDnet training on AFEW dataset - Kobler implementation
+run_afew_kobler:
+    mkdir -p results/afew
+    python ./experiments/train_afew_kobler.py --storage_path ./results/afew/
+
 
 # Download anotherspdnet from Github
 get_anotherspdnet:

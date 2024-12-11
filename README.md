@@ -58,6 +58,18 @@ options:
                         Path to save results
 ```
 
+
+Just to verify the `anotherspdnet` against other implementations, we also provide a script:
+```console
+just run_afew_kobler
+```
+which maps to:
+```console
+> python experiments/train_afew.py --help
+```
+
+and use [TSMNet](https://github.com/rkobler/TSMNet) implementation of SPDNet (as of 11 Dec 2024).
+
 ## Author
 
 Ammar Mian, [ammar.mian@univ-smb.fr](mailto:ammar.mian@univ-smb.fr).

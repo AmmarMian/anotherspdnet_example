@@ -260,9 +260,10 @@ class AFEWSPDnetDataset(Dataset):
     def _shuffle(self) -> None:
         """Shuffle the dataset"""
         if self.shuffle:
-            indexes = torch.randperm(len(self.list_files), generator=self.rng)
-            self.list_files = [self.list_files[i] for i in indexes]
-            self.labels = [self.labels[i] for i in indexes]
+            raise NotImplementedError(f"Sorry this code is not working properly, to debug!!!")
+            # indexes = torch.randperm(len(self.list_files), generator=self.rng)
+            # self.list_files = [self.list_files[i] for i in indexes]
+            # self.labels = [self.labels[i] for i in indexes]
 
     def _discover_files(self) -> None:
         """Discovers the files in the dataset directory"""
