@@ -8,19 +8,28 @@ To help with installation, we use [just](https://github.com/casey/just) task run
 * CPU: `just create_env_cpu`
 * GPU: `just create_env_gpu`
 
-They will create a conda envrinoment called either `anotherspdnet-cpu` or `anotherspdnet-gpu`. This comes with the latest code of `anotherspdnet` grom Github. In case you need to tinker with the code, the `anotherspdnet` repo is a submodule of this one so you can download submodules:
+This will create a conda environment called either `anotherspdnet-cpu` or `anotherspdnet-gpu`. This comes with the latest code of `anotherspdnet` grom Github. In case you need to tinker with the code, the `anotherspdnet` repo is a submodule of this one so you can download submodules:
 * download code `just get_anotherspdnet`
 * install locally `just install_anotherspdnet` to have the changes in the installed package
 
 
-## Getting the dataset
+## Getting the datasets
 
-You can download the AFEW dataset thanks to:
+* You can download the AFEW dataset thanks to:
 ```console
 just download_afewspd
 ```
 
-## Running experiment
+* For the SP_marti dataset:
+```console
+just download_spmarti
+```
+
+## Running experiments
+
+## AFEW dataset 
+
+**This experiment is with the covariance data provided by the authors of the original SPDnet paper which isn't quite clear on all the steps on the pre-processing.**
 
 You can run:
 ```console
@@ -65,10 +74,55 @@ just run_afew_kobler
 ```
 which maps to:
 ```console
-> python experiments/train_afew_kobler.py
+python experiments/train_afew_kobler.py
 ```
 
 and use [TSMNet](https://github.com/rkobler/TSMNet) implementation of SPDNet (as of 11 Dec 2024).
+
+
+### SP_marti
+
+An additional dataset on Stock markets obtained from [Marti](https://marti.ai/ml/2021/01/22/spdtorchnet.html) can be trained using:
+```console
+just run_spmarti
+```
+
+Or using the script directly, which allows to change hyperparameters:
+```console
+> python experiments/train_spmarti.py --help 
+usage: Training on SP_marti dataset with spdnet [-h] [--hd HD] [--lr LR] [--eps EPS] [--softmax SOFTMAX]
+                                                [--reeig_bias REEIG_BIAS] [--batchnorm BATCHNORM]
+                                                [--batch_size BATCH_SIZE] [--epochs EPOCHS] [--device DEVICE]
+                                                [--dtype DTYPE] [--test_percentage TEST_PERCENTAGE]
+                                                [--train_percentage TRAIN_PERCENTAGE] [--seed SEED] [--shuffle_loader]
+                                                [--dataset_path DATASET_PATH] [--storage_path STORAGE_PATH]
+
+options:
+  -h, --help            show this help message and exit
+  --hd HD               Hidden dimensions of spdnet
+  --lr LR               Learning rate
+  --eps EPS             Epsilon for SPDNet
+  --softmax SOFTMAX     Use softmax activation function
+  --reeig_bias REEIG_BIAS
+                        Use reeig with bias term
+  --batchnorm BATCHNORM
+                        Use batch normalization
+  --batch_size BATCH_SIZE
+                        Batch size
+  --epochs EPOCHS       Number of epochs
+  --device DEVICE       Device (cpu or cuda)
+  --dtype DTYPE         Data type (float32 or float64)
+  --test_percentage TEST_PERCENTAGE
+                        Percentage of final test data.
+  --train_percentage TRAIN_PERCENTAGE
+                        Percentage of training data
+  --seed SEED           Random seed
+  --shuffle_loader      Whether to shuffle data loaders at each epoch.
+  --dataset_path DATASET_PATH
+                        Path to AFEW dataset
+  --storage_path STORAGE_PATH
+                        Path to save results
+```
 
 ## Author
 

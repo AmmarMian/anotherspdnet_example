@@ -1,4 +1,4 @@
-# Training on AFEW dataset
+# Training on SP_marti dataset
 
 import argparse
 
@@ -30,7 +30,7 @@ matplotlib.rcParams['font.size'] = 11
 import os
 import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
-from src.data import AFEWSPDnetDataset
+from src.data import SPMartiDataset
 from src.utils import MatplotlibTrainingVisualizer, setup_logging, format_params
 from src.models import SPDNet
 
@@ -42,8 +42,8 @@ from torch.utils.tensorboard import SummaryWriter
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser("Training on AFEW dataset with spdnet")
-    parser.add_argument("--hd", type=str, default="[200, 100, 50]",
+    parser = argparse.ArgumentParser("Training on SP_marti dataset with spdnet")
+    parser.add_argument("--hd", type=str, default="[50, 20]",
                         help="Hidden dimensions of spdnet")
     parser.add_argument("--lr", type=float, default=1e-2,
                         help="Learning rate")
@@ -63,21 +63,23 @@ if __name__ == "__main__":
                         help="Device (cpu or cuda)")
     parser.add_argument("--dtype", type=str, default="float32",
                         help="Data type (float32 or float64)")
-    parser.add_argument("--train_percentage", type=float, default=0.7,
+    parser.add_argument("--test_percentage", type=float, default=0.3,
+                        help="Percentage of final test data.")
+    parser.add_argument("--train_percentage", type=float, default=0.2,
                         help="Percentage of training data")
     parser.add_argument("--seed", type=int, default=5555,
                         help="Random seed")
     parser.add_argument("--shuffle_loader", action="store_true", default=False,
                         help="Whether to shuffle data loaders at each epoch.")
     parser.add_argument("--dataset_path", type=str,
-                        default="data/AFEW_spdnet/spdface_400_inter_histeq/",
+                        default="./data/SP_marti/CorrMats/",
                         help="Path to AFEW dataset")
     parser.add_argument("--storage_path", type=str, default="results/test",
                         help="Path to save results")
 
     args = parser.parse_args()
 
-    logger.info("Training on AFEW dataset with spdnet")
+    logger.info("Training on SP_marti dataset with spdnet")
     args.hd = eval(args.hd)
     args.device = torch.device(args.device)
     args.batchnorm = eval(args.batchnorm)
@@ -90,18 +92,19 @@ if __name__ == "__main__":
 
 
     # Load data
-    dataset = AFEWSPDnetDataset(
+    dataset = SPMartiDataset(
                 directory_path = args.dataset_path,
                 preload = True,
                 shuffle = False,
-                subset = "train",
                 rng = torch.Generator().manual_seed(args.seed),
                 device = args.device,
                 verbose = 1)
     train_size = int(args.train_percentage * len(dataset))
-    val_size = len(dataset) - train_size
-    train_dataset, val_dataset = random_split(dataset, [train_size, val_size],
-                                generator=torch.Generator().manual_seed(args.seed))
+    test_size = int(args.test_percentage * len(dataset))
+    val_size = len(dataset) - train_size - test_size
+    train_dataset, val_dataset, test_dataset = random_split(
+            dataset, [train_size, val_size, test_size],
+            generator=torch.Generator().manual_seed(args.seed))
 
 
     # Create models
@@ -256,15 +259,6 @@ if __name__ == "__main__":
 
     # Test
     print("Testing...")
-    test_dataset = AFEWSPDnetDataset(
-            directory_path = args.dataset_path,
-            preload = True,
-            shuffle = False,
-            subset = "val",
-            rng = torch.Generator().manual_seed(args.seed),
-            device = args.device,
-            verbose = 1)
-
     test_loader = DataLoader(test_dataset, batch_size=args.batch_size,
                             shuffle=False)
 

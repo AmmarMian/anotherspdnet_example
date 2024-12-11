@@ -2,7 +2,6 @@ set dotenv-load
 
 default: info
 
-
 # Create conda environment (cpu version)
 create_env_cpu:
     conda env create -f ./env/environment_cpu.yml
@@ -17,15 +16,26 @@ download_afewspd:
     unzip ./data/AFEW_SPD_data.zip -d ./data/AFEW_spdnet/
     rm ./data/AFEW_SPD_data.zip
 
+# Download SP_marti
+download_spmarti:
+    wget https://sp500-histo.s3-ap-southeast-1.amazonaws.com/CorrMats.zip  -P ./data
+    unzip ./data/CorrMats.zip -d ./data/SP_marti/
+    rm ./data/CorrMats.zip
+
 # Run SPDnet training on AFEW dataset
 run_afew:
     mkdir -p results/afew
     python ./experiments/train_afew.py --storage_path ./results/afew/ 
 
-# Rub SPDnet training on AFEW dataset - Kobler implementation
+# Run SPDnet training on AFEW dataset - Kobler implementation
 run_afew_kobler:
     mkdir -p results/afew
-    python ./experiments/train_afew_kobler.py --storage_path ./results/afew/
+    python ./experiments/train_afew_kobler.py --storage_path ./results/afew_kobler/
+
+# Run SPDNet training on SP_marti dataset
+run_spmarti:
+    mkdir -p results/sp_marti
+    python ./experiments/train_spmarti.py --storage_path ./results/sp_marti
 
 
 # Download anotherspdnet from Github
