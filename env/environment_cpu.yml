@@ -31,3 +31,4 @@ dependencies:
     - pyyaml
     - rich
     - tensorboard
+    - skorch
