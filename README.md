@@ -65,7 +65,7 @@ just run_afew_kobler
 ```
 which maps to:
 ```console
-> python experiments/train_afew.py --help
+> python experiments/train_afew_kobler.py
 ```
 
 and use [TSMNet](https://github.com/rkobler/TSMNet) implementation of SPDNet (as of 11 Dec 2024).
