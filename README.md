@@ -26,7 +26,7 @@ This will create a conda environment called either `anotherspdnet-cpu` or `anoth
 
 ## Running experiments
 
-## AFEW dataset 
+### AFEW dataset 
 
 **This experiment is with the covariance data provided by the authors of the original SPDnet paper which isn't quite clear on all the steps on the pre-processing.**
 
