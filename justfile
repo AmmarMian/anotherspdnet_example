@@ -22,6 +22,13 @@ download_spmarti:
     unzip ./data/CorrMats.zip -d ./data/SP_marti/
     rm ./data/CorrMats.zip
 
+
+# Download HDM05 SPD dataset
+download_hdm05spd:
+    wget https://data.vision.ee.ethz.ch/zzhiwu/ManifoldNetData/SPDData/HDM05_SPDData.zip -P ./data
+    unzip ./data/HDM05_SPDData.zip -d ./data/HDM05_spdnet
+    rm ./data/HDM05_SPDData.zip
+
 # Run SPDnet training on AFEW dataset
 run_afew:
     mkdir -p results/afew
@@ -37,6 +44,10 @@ run_spmarti:
     mkdir -p results/sp_marti
     python ./experiments/train_spmarti.py --storage_path ./results/sp_marti
 
+# Run SPDNet training on SP_marti dataset
+run_hdm05:
+    mkdir -p results/hdm05
+    python ./experiments/train_hdm05.py --storage_path ./results/hdm05
 
 # Download anotherspdnet from Github
 get_anotherspdnet:

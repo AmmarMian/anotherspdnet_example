@@ -15,15 +15,14 @@ This will create a conda environment called either `anotherspdnet-cpu` or `anoth
 
 ## Getting the datasets
 
-* You can download the AFEW dataset thanks to:
-```console
-just download_afewspd
-```
 
-* For the SP_marti dataset:
-```console
-just download_spmarti
-```
+| Dataset         | Command                      |
+|-----------------|------------------------------|
+| AFEW           | `just download_afewspd`      |
+| SP_marti       | `just download_spmarti`      |
+| HDM05          | `just download_hdm05spd`     |
+
+
 
 ## Running experiments
 
@@ -120,6 +119,51 @@ options:
   --shuffle_loader      Whether to shuffle data loaders at each epoch.
   --dataset_path DATASET_PATH
                         Path to AFEW dataset
+  --storage_path STORAGE_PATH
+                        Path to save results
+```
+
+### HDM05 dataset
+
+**This experiment is with the covariance data provided by the authors of the original SPDnet paper which isn't quite clear on all the steps on the pre-processing.**
+
+You can run:
+```console
+just run_hdm05
+```
+which is just a fancy way to run: `python experiments/train_hdm05.py --storage_path results/hdm05/`. Lots of hyperparameters are tunable from the command-line when running the script directly:
+```console
+> python experiments/train_hdm05.py --help
+usage: Training on SP_marti dataset with spdnet [-h] [--hd HD] [--lr LR] [--eps EPS] [--softmax SOFTMAX]
+                                                [--reeig_bias REEIG_BIAS] [--batchnorm BATCHNORM]
+                                                [--batch_size BATCH_SIZE] [--epochs EPOCHS] [--device DEVICE]
+                                                [--dtype DTYPE] [--test_percentage TEST_PERCENTAGE]
+                                                [--train_percentage TRAIN_PERCENTAGE] [--seed SEED] [--shuffle_loader]
+                                                [--dataset_path DATASET_PATH] [--storage_path STORAGE_PATH]
+
+options:
+  -h, --help            show this help message and exit
+  --hd HD               Hidden dimensions of spdnet
+  --lr LR               Learning rate
+  --eps EPS             Epsilon for SPDNet
+  --softmax SOFTMAX     Use softmax activation function
+  --reeig_bias REEIG_BIAS
+                        Use reeig with bias term
+  --batchnorm BATCHNORM
+                        Use batch normalization
+  --batch_size BATCH_SIZE
+                        Batch size
+  --epochs EPOCHS       Number of epochs
+  --device DEVICE       Device (cpu or cuda)
+  --dtype DTYPE         Data type (float32 or float64)
+  --test_percentage TEST_PERCENTAGE
+                        Percentage of final test data.
+  --train_percentage TRAIN_PERCENTAGE
+                        Percentage of training data
+  --seed SEED           Random seed
+  --shuffle_loader      Whether to shuffle data loaders at each epoch.
+  --dataset_path DATASET_PATH
+                        Path to HDM05 dataset
   --storage_path STORAGE_PATH
                         Path to save results
 ```

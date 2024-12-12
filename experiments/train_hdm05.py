@@ -1,4 +1,4 @@
-# Training on SP_marti dataset
+# Training on AFEW dataset
 
 import argparse
 
@@ -30,7 +30,7 @@ matplotlib.rcParams['font.size'] = 11
 import os
 import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
-from src.data import SPMartiDataset
+from src.data import HDM05Dataset
 from src.utils import MatplotlibTrainingVisualizer, setup_logging, format_params
 from src.models import SPDNet
 
@@ -43,7 +43,7 @@ from torch.utils.tensorboard import SummaryWriter
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser("Training on SP_marti dataset with spdnet")
-    parser.add_argument("--hd", type=str, default="[50, 20]",
+    parser.add_argument("--hd", type=str, default="[70, 50, 30]",
                         help="Hidden dimensions of spdnet")
     parser.add_argument("--lr", type=float, default=1e-2,
                         help="Learning rate")
@@ -72,14 +72,14 @@ if __name__ == "__main__":
     parser.add_argument("--shuffle_loader", action="store_true", default=False,
                         help="Whether to shuffle data loaders at each epoch.")
     parser.add_argument("--dataset_path", type=str,
-                        default="./data/SP_marti/CorrMats/",
-                        help="Path to SP_marti dataset")
+                        default="./data/HDM05_spdnet/HDM05_SPDData",
+                        help="Path to HDM05 dataset")
     parser.add_argument("--storage_path", type=str, default="results/test",
                         help="Path to save results")
 
     args = parser.parse_args()
 
-    logger.info("Training on SP_marti dataset with spdnet")
+    logger.info("Training on HDM05 dataset with spdnet")
     args.hd = eval(args.hd)
     args.device = torch.device(args.device)
     args.batchnorm = eval(args.batchnorm)
@@ -92,7 +92,7 @@ if __name__ == "__main__":
 
 
     # Load data
-    dataset = SPMartiDataset(
+    dataset = HDM05Dataset(
                 directory_path = args.dataset_path,
                 preload = True,
                 shuffle = False,
